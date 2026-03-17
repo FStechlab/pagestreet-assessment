@@ -3,8 +3,9 @@ import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/in/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/in/update-employee.dto';
-import { Employee } from 'src/generated/prisma/client';
 import { EmployeeOutDto } from './dto/out/employee.dto';
+import { PrismaModule } from '../prisma/prisma.module';
+import { ConfigModule } from '@nestjs/config';
 
 describe('EmployeeController', () => {
   let controller: EmployeeController;
@@ -12,6 +13,7 @@ describe('EmployeeController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EmployeeController],
+      imports: [PrismaModule, ConfigModule.forRoot({ isGlobal: true })],
       providers: [EmployeeService],
     }).compile();
 
@@ -26,7 +28,7 @@ describe('EmployeeController', () => {
     const createEmployeeDto = {
       firstName: 'John',
       lastName: 'Doe',
-      email: 'john.doe@exampleTESTUNIQUE.com',
+      email: 'john.doe@exampleTESTUNIQUE2.com',
       role: 'Developer',
       department: 'Engineering',
     } as CreateEmployeeDto;
@@ -40,7 +42,7 @@ describe('EmployeeController', () => {
     expect(result.department).toBe(createEmployeeDto.department);
 
     const findResult: EmployeeOutDto[] = await controller.findAll();
-    expect(findResult).toBeInstanceOf(Array);
+    expect(findResult).toHaveProperty('length');
     expect(findResult.length).toBeGreaterThan(0);
     expect(findResult.some(emp => emp.id === result.id)).toBe(true);
 
@@ -54,6 +56,7 @@ describe('EmployeeController', () => {
     expect(updateResult.lastName).toBe(updateEmployeeDto.lastName);
 
     const deleteResult = await controller.remove(result.id);
-    expect(deleteResult).toHaveProperty('message', 'Employee deleted successfully');
+    expect(deleteResult).toHaveProperty('id');
+    expect(deleteResult.id).toBe(result.id);
   });
 });

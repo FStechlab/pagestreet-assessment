@@ -1,9 +1,28 @@
+import { IsDate, IsEmail, IsOptional, IsString, IsUUID } from "class-validator";
+
 export class EmployeeOutDto {
+    @IsUUID()
     id: string;
-    firstName: string | null;
-    lastName: string | null;
+
+    @IsString()
+    @IsOptional()
+    firstName: string | undefined;
+
+    @IsString()
+    @IsOptional()
+    lastName: string | undefined;
+
+    @IsEmail()
     email: string;
-    role: string | null;
-    department: string | null;
+
+    @IsString()
+    @IsOptional()
+    role: string | undefined;
+
+    @IsString()
+    @IsOptional()
+    department: string | undefined;
+
+    @IsDate()
     createdAt: Date;
 }

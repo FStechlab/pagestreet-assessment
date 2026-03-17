@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.5.0",
   "engineVersion": "280c870be64f457428992c43c1f6d557fab6e29e",
   "activeProvider": "sqlite",
-  "inlineSchema": "generator client {\n  provider     = \"prisma-client\"\n  output       = \"../src/generated/prisma\"\n  moduleFormat = \"cjs\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n}\n\nmodel Employee {\n  id               String    @id @default(uuid())\n  firstName        String?\n  lastName         String?\n  email            String    @unique\n  role             String?\n  department       String?\n  createdAt        DateTime  @default(now())\n  tasks            Task[]\n  assignedSubTasks SubTask[]\n}\n\nmodel Task {\n  id          String       @id @default(uuid())\n  title       String\n  description String       @default(\"\")\n  employee    Employee     @relation(fields: [employeeId], references: [id])\n  employeeId  String\n  status      TaskStatus\n  priority    TaskPriority\n  subTasks    SubTask[]\n  startDate   DateTime\n  dueDate     DateTime\n  createdAt   DateTime     @default(now())\n}\n\nmodel SubTask {\n  id         String    @id @default(uuid())\n  title      String\n  completed  Boolean   @default(false)\n  task       Task      @relation(fields: [taskId], references: [id])\n  taskId     String\n  assignee   Employee? @relation(fields: [assigneeId], references: [id])\n  assigneeId String?\n}\n\nenum TaskStatus {\n  todo\n  in_progress\n  done\n}\n\nenum TaskPriority {\n  low\n  medium\n  high\n}\n",
+  "inlineSchema": "generator client {\n  provider            = \"prisma-client\"\n  output              = \"../src/generated/prisma\"\n  moduleFormat        = \"cjs\"\n  importFileExtension = \"\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n}\n\nmodel Employee {\n  id               String    @id @default(uuid())\n  firstName        String?\n  lastName         String?\n  email            String    @unique\n  role             String?\n  department       String?\n  createdAt        DateTime  @default(now())\n  tasks            Task[]\n  assignedSubTasks SubTask[]\n}\n\nmodel Task {\n  id          String       @id @default(uuid())\n  title       String\n  description String       @default(\"\")\n  employee    Employee     @relation(fields: [employeeId], references: [id])\n  employeeId  String\n  status      TaskStatus\n  priority    TaskPriority\n  subTasks    SubTask[]\n  startDate   DateTime\n  dueDate     DateTime\n  createdAt   DateTime     @default(now())\n}\n\nmodel SubTask {\n  id         String    @id @default(uuid())\n  title      String\n  completed  Boolean   @default(false)\n  task       Task      @relation(fields: [taskId], references: [id])\n  taskId     String\n  assignee   Employee? @relation(fields: [assigneeId], references: [id])\n  assigneeId String?\n}\n\nenum TaskStatus {\n  todo\n  in_progress\n  done\n}\n\nenum TaskPriority {\n  low\n  medium\n  high\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
